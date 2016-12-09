@@ -11,6 +11,6 @@ public class diceRoller {
         die2 = (int)(Math.random() * 8 + 1);
         System.out.println("6-Sided die = " + die1);
         System.out.println("8-Sided die = " + die2);
-        System.out.println("Total of dice is " + die1+die2);
+        System.out.println("Total of dice is " + (die1+die2));
     }
 }
