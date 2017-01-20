@@ -14,13 +14,13 @@ public class NumberOfEvens {
         elsword[0][0] = 8;
         for(int i : elesis){
             if(i%2 == 0){
-                System.out.println("Added " + i + " to " + raven + ".");
-                raven += i;
+                System.out.println("Added " + i + " to the counter.");
+                raven += 1;
             }
             else{
                 System.out.println("Skipped " + i + ".");
             }
         }
-        System.out.println(raven + " is the sum of all even numbers.");
+        System.out.println(raven + " is the number of all even numbers.");
     }
 }
