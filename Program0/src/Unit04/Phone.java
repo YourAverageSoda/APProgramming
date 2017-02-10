@@ -7,8 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.util.concurrent.TimeUnit;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -16,19 +14,19 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.Timer;
 
 /**
- * 
- * @author andy_zheng422
+ * @author nolan caudill
+ * @author Andy Zheng
+ * Date Created: 1/31/17
  */
 public class Phone implements ActionListener{
     JFrame keyScreen, screen;
     JButton[] keypadArray; 
     JPanel keypad, screenPanel;
     GridBagConstraints constraints;
+    public static boolean status;
     JTextField textField;
-    boolean status;
     public static boolean time;
     public static JFrame startup;
     public static URL nokiaURL;
@@ -40,26 +38,22 @@ public class Phone implements ActionListener{
         String placeholder = getModel();
         if(placeholder.toUpperCase().matches("NOKIA DIAMONDBREAKER")){
             Phone phones = new Phone();
-            initializePhone();
+            phones.initializePhone();
         }
         else{
             Phone phones = new Phone(placeholder);
-            initializePhone();
+            phones.initializePhone();
         }
         boolean called = false;            
-        DecimalFormatSymbols phoneNumberSymbols = new DecimalFormatSymbols();  
-        Integer timeUntilCall = new Integer((int)(Math.random() * (Math.random()*100000)));
+        Integer timeUntilCall = new Integer((int)(Math.random() * (Math.random()*10000)));
         while(!called){
-            if(System.currentTimeMillis() >= timeUntilCall){
-                JOptionPane.showMessageDialog(null, "Incoming call from 763-506-8400");
+            if((System.currentTimeMillis() >= timeUntilCall) ){
+                JOptionPane.showConfirmDialog(null, "Incoming call from 763-506-8400");
                 called = true;
             }
             else if(Phone.time){
                 timeUntilCall += 1;
                 TimeUnit.SECONDS.sleep(1);
-            }
-            else{
-                System.out.println("Hi");
             }
         }
     }
@@ -71,12 +65,7 @@ public class Phone implements ActionListener{
         keypad.setPreferredSize(new Dimension(200,350));
         constraints = new GridBagConstraints();
         status = false;
-        keypadArray[14] = new JButton("Home");
-        keypadArray[14].addActionListener(this);
-        keypadArray[14].setActionCommand("HOME");
-        takeOverTheWorld = new JButton("Take Over the World!");
-        takeOverTheWorld.addActionListener(this);
-        takeOverTheWorld.setActionCommand("TAKEOVER");
+        createDefaults();
     }
     public Phone(String modelType) throws MalformedURLException{
         model = modelType;
@@ -87,6 +76,9 @@ public class Phone implements ActionListener{
         keypad.setPreferredSize(new Dimension(200,350));
         constraints = new GridBagConstraints();
         status = false;
+        createDefaults();
+    }
+    public void createDefaults(){
         keypadArray[14] = new JButton("Home");
         keypadArray[14].addActionListener(this);
         keypadArray[14].setActionCommand("HOME");
@@ -97,7 +89,13 @@ public class Phone implements ActionListener{
     public static String getModel(){
         return JOptionPane.showInputDialog(null, "Input model: ", "Nokia DiamondBreaker");
     }
-    public static void initializePhone(){
+    public static String getModelType(){
+        return model;
+    }
+    public void changeTextField(ActionEvent ae){
+        textField.setText(textField.getText() + ae.getActionCommand());
+    }
+    public void initializePhone(){
         startup = new JFrame(model);
         startup.setResizable(false);
         startup.setMinimumSize(new Dimension(300, 70));
@@ -205,40 +203,18 @@ public class Phone implements ActionListener{
     public void actionPerformed(ActionEvent ae) {
         switch(ae.getActionCommand()){
             case "1":
-                textField.setText(textField.getText() + ae.getActionCommand());
-                break;
             case "2":
-                textField.setText(textField.getText() + ae.getActionCommand());
-                break;
             case "3":
-                textField.setText(textField.getText() + ae.getActionCommand());
-                break;
             case "4":
-                textField.setText(textField.getText() + ae.getActionCommand());
-                break;
             case "5":
-                textField.setText(textField.getText() + ae.getActionCommand());
-                break;
             case "6":
-                textField.setText(textField.getText() + ae.getActionCommand());
-                break;
             case "7":
-                textField.setText(textField.getText() + ae.getActionCommand());
-                break;
             case "8":
-                textField.setText(textField.getText() + ae.getActionCommand());
-                break;
             case "9":
-                textField.setText(textField.getText() + ae.getActionCommand());
-                break;
             case "0":
-                textField.setText(textField.getText() + ae.getActionCommand());
-                break;
             case "#":
-                textField.setText(textField.getText() + ae.getActionCommand());
-                break;
             case "*":
-                textField.setText(textField.getText() + ae.getActionCommand());
+                changeTextField(ae);
                 break;
             case "CALL":
                 JOptionPane.showMessageDialog(keyScreen, "Calling " + textField.getText() + ".....", model, JOptionPane.INFORMATION_MESSAGE);
@@ -248,41 +224,29 @@ public class Phone implements ActionListener{
                 break;
             case "REDDIT":
                 if (!time) {
-                    JOptionPane.showMessageDialog(null, "I'm sorry, but Reddit isn't functional on a goddamn " + model + ".", model, JOptionPane.INFORMATION_MESSAGE);
-                    break;
+                    JOptionPane.showMessageDialog(null, "I'm sorry, but Reddit isn't functional on a goddamn " + getModelType() + ".", getModelType(), JOptionPane.INFORMATION_MESSAGE);
                 }
-                else {
-                    break;
-                }
+                break;
             case "HOME":
                 if (!time) {
                     textField.setText("");
                     screen.setLocationRelativeTo(keyScreen);
                     keyScreen.setVisible(false);
                     screen.setVisible(true);
-                    break;
                 } 
-                else {
-                    break;
-                }
+                break;
             case "PHONE":
                 if (!time) {
-                keyScreen.setLocationRelativeTo(screen);
-                keyScreen.setVisible(true);
-                screen.setVisible(false);
+                    keyScreen.setLocationRelativeTo(screen);
+                    screen.setVisible(false);
+                    keyScreen.setVisible(true);
+                }
                 break;
-                }
-                else {
-                    break;
-                }
             case "SHUT DOWN":
                 if (!time) {
-                System.exit(0);
+                    System.exit(0);
+                }
                 break;
-                }
-                else{
-                    break;
-                }
             case "TAKEOVER":
                 status = !status;
                 startup.dispose();

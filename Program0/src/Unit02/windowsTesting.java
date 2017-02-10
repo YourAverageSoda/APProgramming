@@ -19,6 +19,7 @@ public class windowsTesting extends JFrame implements ActionListener{
     JPanel lilyPanel; JLabel lilyLabel; ImageIcon chiakiIcon;
     BufferedImage chiaki;
     JButton lilyButton0; JButton lilyButton1;
+    int lilyCounter;
     
     public static void main(String[] args) throws IOException {
         windowsTesting lily = new windowsTesting();
@@ -32,29 +33,17 @@ public class windowsTesting extends JFrame implements ActionListener{
     }
     public JLabel createJLabel(int placeholder1){
         lilyLabel = new JLabel();
-        lilyLabel.setIcon(this.createImageIcon(placeholder1));
         return lilyLabel;
-    }
-    public String getChiakiLocation(int pic){
-        String[] chiakiLocation = new String[3];
-        chiakiLocation[0] = "M:\\Images\\ChiakiIcon.jpg";
-        chiakiLocation[1] = "M:\\Images\\Chiaki.jpg";
-        chiakiLocation[2] = "M:\\Images\\ChiakiNeko.jpg";
-        return chiakiLocation[pic];
-    }
-    public ImageIcon createImageIcon(int placeholder2){
-        chiakiIcon = new ImageIcon(this.getChiakiLocation(placeholder2));
-        return chiakiIcon;
     }
     public windowsTesting() throws MalformedURLException, IOException {    
         super("Lily");
         setResizable(false);
-        setIconImage(this.createImageIcon(0).getImage());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
         this.setLocationRelativeTo(null);
-        add(this.createJPanel(1));
-        //this.addButton();
+        lilyCounter = 1;
+        add(this.createJPanel(lilyCounter));
+        this.addButton();
         this.addMenu();
         pack();
     }
@@ -78,7 +67,17 @@ public class windowsTesting extends JFrame implements ActionListener{
         }
     }
     public void nextImage(){    
-        lilyLabel.setIcon(this.createImageIcon(2));
+        switch(lilyCounter){
+            case 0:
+            case 1: 
+                lilyCounter++;
+                break;
+            case 2:
+                lilyCounter--;
+                break;
+            default:
+                break;
+        }
         addMenu();
         pack();
     }
