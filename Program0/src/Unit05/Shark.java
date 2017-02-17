@@ -9,6 +9,9 @@ public class Shark extends Fish{
     public Shark(){
         attack = false;
     }
+    public void changeAttack(){
+        attack = !attack;
+    }
     public boolean isAttacking(){
         return attack;
     }
